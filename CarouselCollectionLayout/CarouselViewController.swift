@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import SnapKit
+
 
 class CarouselViewController: UIViewController {
     
@@ -29,18 +29,15 @@ class CarouselViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        setupCollectionView()
+        view.addSubview(collectionView)
     }
     
-    // MARK: - Private Methods
-
-    private func setupCollectionView() {
-        view.addSubview(collectionView)
-        collectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.centerY.equalToSuperview()
-            make.height.equalTo(160)
-        }
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        let h: CGFloat = 160
+        let y: CGFloat = (view.frame.height - h) / 2
+        collectionView.frame = CGRect(x: 0, y: y, width: view.frame.width, height: h)
     }
 }
 
@@ -53,6 +50,7 @@ extension CarouselViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CarouselCell.reusableIndentifer, for: indexPath) as! CarouselCell
         cell.imageView.image = UIImage(named: "\(indexPath.item + 1).jpg")
+        cell.setNeedsLayout()
         return cell
     }
 }

@@ -11,24 +11,24 @@ import UIKit
 class CarouselCell: UICollectionViewCell {
     
     // MARK: - Public Properties
-
-	let imageView: UIImageView = {
-		let imageView = UIImageView()
-		imageView.contentMode = .scaleAspectFit
-		return imageView
-	}()
-
+    
+    let imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
     // MARK: - Private Properties
-
-	private let maskShapeLayer: CAShapeLayer = CAShapeLayer()
+    
+    private let maskShapeLayer: CAShapeLayer = CAShapeLayer()
     
     // MARK: - Initializers
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.backgroundColor = .red
-		layer.mask = maskShapeLayer
-        setupImageView()
+        layer.mask = maskShapeLayer
+        contentView.addSubview(imageView)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -36,19 +36,15 @@ class CarouselCell: UICollectionViewCell {
     }
     
     // MARK: - Public Methods
-
-	override func layoutSublayers(of layer: CALayer) {
-		super.layoutSublayers(of: layer)
-		maskShapeLayer.path = UIBezierPath(roundedRect: contentView.bounds, cornerRadius: 12).cgPath
-	}
     
-    // MARK: - Private Methods
+    override func layoutSublayers(of layer: CALayer) {
+        super.layoutSublayers(of: layer)
+        maskShapeLayer.path = UIBezierPath(roundedRect: contentView.bounds, cornerRadius: 12).cgPath
+    }
     
-    private func setupImageView() {
-        contentView.addSubview(imageView)
-        imageView.snp.makeConstraints { make in
-			make.edges.equalToSuperview()
-        }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        imageView.frame = CGRect(origin: .zero, size: contentView.frame.size)
     }
 }
 
